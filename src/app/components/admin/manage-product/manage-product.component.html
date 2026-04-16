@@ -1,0 +1,108 @@
+<h2>Manage Product</h2>
+
+<!-- ✅ Add / Edit Form -->
+<div class="card p-3 shadow-sm mb-4">
+  <h4>{{ isEdit ? 'Edit Product' : 'Add New Product' }}</h4>
+
+  <div class="row mt-3">
+
+    <!-- Product Name -->
+    <div class="col-md-6 mb-3">
+      <label>Product Name</label>
+      <input class="form-control" [(ngModel)]="newProduct.name">
+    </div>
+
+    <!-- Price -->
+    <div class="col-md-3 mb-3">
+      <label>Price</label>
+      <input type="number" class="form-control" [(ngModel)]="newProduct.price">
+    </div>
+
+    <!-- Stock -->
+    <div class="col-md-3 mb-3">
+      <label>Stock</label>
+      <input type="number" class="form-control" [(ngModel)]="newProduct.stock">
+    </div>
+
+
+
+    <!-- Category -->
+    <div class="col-md-3 mb-3">
+      <label>Category</label>
+      <select class="form-control" [(ngModel)]="newProduct.categoryId">
+        <option [value]="0" disabled>Select Category</option>
+        <option *ngFor="let c of categories" [value]="c.categoryid">{{ c.categoryname }}</option>
+      </select>
+    </div>
+
+   
+
+    <!-- Image Upload -->
+    <div class="col-md-6 mb-3">
+      <label>Product Image</label>
+      <input type="file" class="form-control" multiple (change)="onImageSelected($event)">
+    </div>
+
+    <!-- Image Preview -->
+    <div class="col-md-6 mb-3" *ngIf="imagePreview">
+      <label>Preview</label><br>
+      <img [src]="imagePreview" class="img-thumbnail" style="width:150px; height:150px; object-fit:cover;">
+    </div>
+
+    <!-- Specifications -->
+    <div class="col-12 mt-4">
+      <h5>Specifications</h5>
+      <div *ngFor="let spec of newProduct.specifications; let i = index" class="row align-items-center mb-2">
+        <div class="col-md-5">
+          <input class="form-control" placeholder="Specification Name" [(ngModel)]="spec.name" name="specName{{i}}">
+        </div>
+        <div class="col-md-5">
+          <input class="form-control" placeholder="Specification Value" [(ngModel)]="spec.value" name="specValue{{i}}">
+        </div>
+        <div class="col-md-2 text-center">
+          <button class="btn btn-danger btn-sm" (click)="removeSpecification(i)">Remove</button>
+        </div>
+      </div>
+      <button class="btn btn-outline-primary btn-sm" (click)="addSpecification()">+ Add Specification</button>
+    </div>
+
+    <!-- Buttons  -->
+    <div class="col-12 mt-4">
+      <button class="btn btn-primary" *ngIf="!isEdit" (click)="addProduct()">Add Product</button>
+      <button class="btn btn-success" *ngIf="isEdit" (click)="updateProduct()">Update Product</button>
+      <button class="btn btn-secondary ms-2" (click)="resetForm()">Clear</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- Product Table (click)="editProduct(p)"  (click)="deleteProduct(p.id!)" -->
+<table class="table table-bordered shadow-sm">
+  <thead class="table-light">
+    <tr>
+      <th>ID</th>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Price</th>
+      <th>Stock</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let p of products">
+      <td>{{ p.id }}</td>
+      <td>
+        <img *ngIf="p.images && p.images.length" [src]="p.images[0].imageUrl" style="width:60px;height:60px;object-fit:cover;">
+      </td>
+      <td>{{ p.name }}</td>
+      <td>{{ p.category?.categoryname }}</td>
+      <td>₹{{ p.price }}</td>
+      <td>{{ p.stock }}</td>
+      <td>
+        <button class="btn btn-sm btn-warning" (click)="editProduct(p)">Edit</button>
+        <button class="btn btn-sm btn-danger ms-1" (click)="deleteProduct(p.id!)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
