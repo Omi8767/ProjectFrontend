@@ -7,7 +7,7 @@
             <img [src]="p.images?.[0]?.imageUrl" [alt]="p.name" style="height: 120px; object-fit: cover;">
             <div class="card-body">
                 <h6>{{p.price | currency:'INR'}}</h6>
-                <a class="btn btn-primary btn-sm mx-auto">
+                <a class="btn btn-primary btn-sm mx-auto" [routerLink]="['/product', p.id]">
                     View More
                 </a>
             </div>
