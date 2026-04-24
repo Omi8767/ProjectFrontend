@@ -1,0 +1,35 @@
+<div *ngIf="product" class="row g-3">
+    <div class="col-12 col-md-6">
+        <img [src]="selectedImage || getProductImage()" alt="" 
+        class="img-fluid mb-3" style="height: 350px;object-fit: cover;width: 100%;">
+
+        <div class="d-flex gap-2 flex-wrap">
+            <img *ngFor="let img of product?.images" 
+            [src]="img.imageUrl" alt=""
+            (click)="selectImage(img.imageUrl)" 
+            style="height: 70px; width: 70px;object-fit: cover;cursor: pointer;
+            border: 2px solid #ddd;">
+        </div>
+    </div>
+
+    <div class="col-12 col-md-6 d-flex flex-column">
+        <h2 class="h4 fw-bold">{{product.name}}</h2>
+        <p class="text-muted mb-1">Category:{{product.category.categoryname}}</p>
+        <p class="h5 text-primary fw-bold mb-3">{{product.price | currency:'INR'}}</p>
+        
+        <button class="btn btn-primary w-50 mb-4" (click)="addToCart()">
+            Add to Cart
+        </button>
+
+        <div *ngIf="product.specifications?.length">
+            <h5 class="fw-bold mb-2">Specifications</h5>
+            <table class="table table-sm table-bordered">
+                <tr *ngFor="let spec of product.specifications">
+                    <th>{{spec.name}}</th>
+                    <td>{{spec.value}}</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
