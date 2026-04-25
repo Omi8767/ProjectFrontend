@@ -1,0 +1,85 @@
+<div class="container py-4">
+  <h2 class="mb-4 text-center"> My Cart</h2>
+
+  <div *ngIf="loading" class="text-center py-4 text-muted">Loading...</div>
+  <div *ngIf="!loading && cartItems.length === 0" class="text-center py-4 text-muted">
+    Cart is empty.
+  </div>
+
+  <div *ngIf="cartItems.length > 0" class="row g-3">
+    <div *ngFor="let item of cartItems" class="col-12">
+      <div class="card shadow-sm">
+        <div class="row g-0 align-items-center">
+          <div class="col-md-2 text-center p-2">
+            <img [src]="getImage(item)" class="img-fluid rounded border" [alt]="item.product.name" />
+          </div>
+
+          <div class="col-md-6">
+            <div class="card-body">
+              <h5 class="card-title">{{ item.product.name }}</h5>
+              <p class="card-text text-muted">{{ item.product.price | number | currency:'INR' }}</p>
+
+              <div class="input-group w-auto">
+                <button class="btn btn-outline-secondary" >-</button>
+                <input
+                  type="number"
+                  class="form-control text-center"
+                  [(ngModel)]="item.quantity"
+                  
+                />
+                <button class="btn btn-outline-secondary" >+</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4 text-end pe-3">
+            <p class="h5">{{ item.product.price * item.quantity | number | currency:'INR' }}</p>
+            <button class="btn btn-link text-danger p-0" >Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🏠 Shipping Info Form -->
+    <div class="col-12 mt-4">
+      <div class="card p-3 shadow-sm">
+        <h5 class="mb-3">🏠 Shipping Information</h5>
+        <form>
+          <!-- <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">Full Name</label>
+              <input type="text" class="form-control" [(ngModel)]="shipping.name" name="name" required />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Contact Number</label>
+              <input type="text" class="form-control" [(ngModel)]="shipping.contact" name="contact" required />
+            </div>
+            <div class="col-12">
+              <label class="form-label">Address</label>
+              <input type="text" class="form-control" [(ngModel)]="shipping.address" name="address" required />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">City</label>
+              <input type="text" class="form-control" [(ngModel)]="shipping.city" name="city" required />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Pin Code</label>
+              <input type="text" class="form-control" [(ngModel)]="shipping.pinCode" name="pinCode" required />
+            </div>
+          </div> -->
+        </form>
+      </div>
+    </div>
+
+    <!--  Cart Total + Place Order -->
+    <div class="col-12 mt-4">
+      <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded shadow-sm">
+        <h5>Total: {{ total | number | currency:'INR' }}</h5>
+        <div class="d-flex gap-2">
+          <button class="btn btn-danger" >Clear Cart</button>
+          <button class="btn btn-primary" >Place Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
