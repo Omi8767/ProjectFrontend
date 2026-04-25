@@ -30,6 +30,7 @@ export const routes: Routes = [
       { path: 'feedback', loadComponent: () => import('./components/customer/feedback/feedback.component').then(m => m.FeedbackComponent) },
       { path: 'products', loadComponent: () => import('./components/customer/product-list/product-list.component').then(m => m.ProductListComponent) },
       { path: 'product/:id', loadComponent: () => import('./components/customer/product-details/product-details.component').then(m => m.ProductDetailsComponent) },
+      { path: 'cart', loadComponent: () => import('./components/customer/cart/cart.component').then(m => m.CartComponent) },
 
     ]
   },
