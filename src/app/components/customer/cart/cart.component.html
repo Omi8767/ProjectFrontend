@@ -20,21 +20,21 @@
               <p class="card-text text-muted">{{ item.product.price | number | currency:'INR' }}</p>
 
               <div class="input-group w-auto">
-                <button class="btn btn-outline-secondary" >-</button>
+                <button class="btn btn-outline-secondary" (click)="updateQuantity(item,-1)">-</button>
                 <input
                   type="number"
                   class="form-control text-center"
                   [(ngModel)]="item.quantity"
                   
                 />
-                <button class="btn btn-outline-secondary" >+</button>
+                <button class="btn btn-outline-secondary" (click)="updateQuantity(item,1)">+</button>
               </div>
             </div>
           </div>
 
           <div class="col-md-4 text-end pe-3">
-            <p class="h5">{{ item.product.price * item.quantity | number | currency:'INR' }}</p>
-            <button class="btn btn-link text-danger p-0" >Remove</button>
+            <p class="h5">{{ item.product.price * item.quantity  | currency:'INR' }}</p>
+            <button class="btn btn-link text-danger p-0" (click)="removeItem(item)">Remove</button>
           </div>
         </div>
       </div>
@@ -74,9 +74,9 @@
     <!--  Cart Total + Place Order -->
     <div class="col-12 mt-4">
       <div class="d-flex justify-content-between align-items-center p-3 bg-light rounded shadow-sm">
-        <h5>Total: {{ total | number | currency:'INR' }}</h5>
+        <h5>Total: {{ total  | currency:'INR' }}</h5>
         <div class="d-flex gap-2">
-          <button class="btn btn-danger" >Clear Cart</button>
+          <button class="btn btn-danger" (click)="clearCart()">Clear Cart</button>
           <button class="btn btn-primary" >Place Order</button>
         </div>
       </div>

@@ -34,6 +34,18 @@ export class CartService {
     return this.http.get<ICart[]>(`${this.apiUrl}/${id}`);
   }
 
+  removeFromCart(CartItemId:number):Observable<void>{
+    return this.http.delete<void>(`${this.apiUrl}/${CartItemId}`);
+  }
+
+  updateCartItem(item:ICartDTO,id:number):Observable<ICart>{
+    return this.http.put<ICart>(`${this.apiUrl}/${id}`,item);
+  }
+
+  clearCart(customerId:number):Observable<void>{
+    return this.http.delete<void>(`${this.apiUrl}/clear/customer/${customerId}`);
+  }
+
   getTotal(items?:ICart[]):number{
     if(!items) return 0;
     return items.reduce((sum,it)=>sum+(it.product?.price ??0)*(it.quantity ?? 0),0);

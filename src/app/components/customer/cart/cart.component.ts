@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService, ICart } from '../../../services/cart.service';
+import { CartService, ICart, ICartDTO } from '../../../services/cart.service';
 import { Customer } from '../../../services/customer-service.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
+
   selector: 'app-cart',
   standalone: true,
   imports: [CommonModule,CurrencyPipe,FormsModule],
@@ -17,6 +18,8 @@ export class CartComponent implements OnInit {
   total:number =0;
   loading=true;
   customer!:Customer;
+
+  updateCartDTO:ICartDTO={customerId:0,productId:0,quantity:0};
 
   constructor(private cartService:CartService){}
 
@@ -47,6 +50,61 @@ export class CartComponent implements OnInit {
   getImage(item:ICart): string{
     const img = item.product?.images?.[0].imageUrl;
     return img;
+  }
+
+  removeItem(item:ICart){
+    if(!item.id) return;    
+
+    this.cartService.removeFromCart(item.id).subscribe({
+      next:()=>{
+        if(!this.customer.id) return;
+        this.cartItems = this.cartItems.filter(i=>i.id !== item.id);
+        this.total = this.cartService.getTotal(this.cartItems);
+      },
+      error:(err)=>{
+       console.error(err);
+      }
+    })
+  }
+
+  updateQuantity(item:ICart,change:number){
+    const newQty = item.quantity + change;
+    if(newQty <=0){
+      this.removeItem(item);
+      return;
+    }
+
+    item.quantity = newQty;
+
+    if(!this.customer.id || !item.product.id || !item.id) return;
+
+    this.updateCartDTO.customerId = this.customer.id;
+    this.updateCartDTO.productId = item.product.id;
+    this.updateCartDTO.quantity = item.quantity;
+
+    this.cartService.updateCartItem(this.updateCartDTO,item.id).subscribe({
+      next:(res)=>{
+        item.quantity = res.quantity;
+        this.total = this.cartService.getTotal(this.cartItems);
+      },
+      error:(err)=>{
+        console.error(err);
+      }
+    })
+  }
+
+  clearCart(){
+    if(!this.customer.id) return;
+
+    this.cartService.clearCart(this.customer.id).subscribe({
+      next:(res)=>{
+        this.cartItems = [];
+        this.total = 0;
+      },
+      error:(err)=>{
+        console.error(err);
+      }
+    })
   }
 
 
