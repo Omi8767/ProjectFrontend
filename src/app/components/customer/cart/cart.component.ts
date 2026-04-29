@@ -3,6 +3,8 @@ import { CartService, ICart, ICartDTO } from '../../../services/cart.service';
 import { Customer } from '../../../services/customer-service.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { OrderService } from '../../../services/order.service';
 
 @Component({
 
@@ -19,9 +21,19 @@ export class CartComponent implements OnInit {
   loading=true;
   customer!:Customer;
 
+  shipping={
+    name:'',
+    address:'',
+    city:'',
+    pinCode:'',
+    contact:''
+  }
+
   updateCartDTO:ICartDTO={customerId:0,productId:0,quantity:0};
 
-  constructor(private cartService:CartService){}
+  constructor(private cartService:CartService,private router:Router,
+    private orderService:OrderService
+  ){}
 
   ngOnInit(): void {
      const store = localStorage.getItem('customer');
@@ -105,6 +117,46 @@ export class CartComponent implements OnInit {
         console.error(err);
       }
     })
+  }
+
+
+  placeOrder(){
+ const store = localStorage.getItem('customer');
+    this.customer = store ? JSON.parse(store) : null;
+
+    if(!this.customer.id){
+        this.router.navigate(['/login']);
+    }
+
+    if(!this.shipping.name || !this.shipping.address || !this.shipping.city || !this.shipping.contact||!this.shipping.pinCode){
+      alert("please fill the shipping info");
+      return;
+    }
+
+    this.orderService.placeOrder(
+      this.cartItems,
+      this.shipping,
+      18,   //gst percentage
+      5
+    ).subscribe({
+      next:(res)=>{
+        localStorage.setItem('lastOrder',JSON.stringify(res));
+         if(!this.customer.id) return;
+        this.cartService.clearCart(this.customer.id).subscribe({
+          next:()=>{
+            this.cartItems=[]
+            this.loadCart(this.customer.id!);
+            this.total=0;
+          }
+        });
+
+        this.router.navigate(['/customer/payment']);
+      },
+      error:(err)=>{
+        console.error(err);
+      }
+    })
+
   }
 
 

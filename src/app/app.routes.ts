@@ -31,6 +31,7 @@ export const routes: Routes = [
       { path: 'products', loadComponent: () => import('./components/customer/product-list/product-list.component').then(m => m.ProductListComponent) },
       { path: 'product/:id', loadComponent: () => import('./components/customer/product-details/product-details.component').then(m => m.ProductDetailsComponent) },
       { path: 'cart', loadComponent: () => import('./components/customer/cart/cart.component').then(m => m.CartComponent) },
+      { path: 'payment', loadComponent: () => import('./components/customer/payment/payment.component').then(m => m.PaymentComponent) },
 
     ]
   },
