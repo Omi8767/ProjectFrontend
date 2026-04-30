@@ -86,6 +86,16 @@ export class PaymentComponent implements OnInit {
       });
 
     }
+    else if(method === 'Card'){
+      this.paymentService.createStripeSession(this.orderId).subscribe({
+        next:(res:any)=>{
+          window.location.href = res.url;
+        },
+        error:(err)=>{
+          console.error(err);
+        }
+      })
+    }
   }
 
 }

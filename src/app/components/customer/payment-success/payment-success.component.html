@@ -1,0 +1,10 @@
+<div *ngIf="loading">
+  Verifying Payment.....
+</div>
+
+<div *ngIf="!loading">
+ Payment Verified....
+ <br>
+ <br>
+ <p>{{order | json}}</p>
+</div>

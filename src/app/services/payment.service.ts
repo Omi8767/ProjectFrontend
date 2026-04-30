@@ -27,4 +27,13 @@ export class PaymentService {
   makePayment(payment:IPaymentDTO):Observable<any>{
     return  this.http.post(`${this.apiUrl}`,payment);
   }
+
+  createStripeSession(orderId:number){
+   return this.http.post(`${this.apiUrl}/create-session/${orderId}`,{})
+  }
+
+  confirmPayment(sessionId:string):Observable<any>{
+    return this.http.get(`${this.apiUrl}/confirm?sessionId=${sessionId}`);
+  }
+
 }

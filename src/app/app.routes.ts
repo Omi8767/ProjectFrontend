@@ -32,6 +32,8 @@ export const routes: Routes = [
       { path: 'product/:id', loadComponent: () => import('./components/customer/product-details/product-details.component').then(m => m.ProductDetailsComponent) },
       { path: 'cart', loadComponent: () => import('./components/customer/cart/cart.component').then(m => m.CartComponent) },
       { path: 'payment', loadComponent: () => import('./components/customer/payment/payment.component').then(m => m.PaymentComponent) },
+      { path: 'payment-success', loadComponent: () => import('./components/customer/payment-success/payment-success.component').then(m => m.PaymentSuccessComponent) },
+      { path: 'payment-failed', loadComponent: () => import('./components/customer/payment-failed/payment-failed.component').then(m => m.PaymentFailedComponent) },
 
     ]
   },
