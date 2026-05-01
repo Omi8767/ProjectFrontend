@@ -1,0 +1,149 @@
+<h2 class="mb-3 fw-bold">My Orders</h2>
+
+<div *ngIf="orders.length ===0" class="alert alert-info">
+    No orders Found
+</div>
+
+<div *ngFor="let order of orders" class="card mb-4 shadow-sm p-3">
+
+    <!-- 🔹 Order Header -->
+    <div class="row mb-3">
+
+        <div class="col-md-3">
+            <strong>Order ID:</strong> {{ order.id }}
+        </div>
+
+        <div class="col-md-3">
+            <strong>Date:</strong> {{ order.orderDate | date:'medium' }}
+        </div>
+
+        <div class="col-md-3">
+            <strong>Status:</strong>
+            <span class="badge" [ngClass]="{
+        'bg-warning': order.status === 'IN_PROCESS',
+        'bg-primary': order.status === 'CONFIRMED',
+        'bg-info': order.status === 'DISPATCH',
+        'bg-success': order.status === 'DELIVERED',
+        'bg-danger': order.status === 'REJECT' || order.status === 'CANCELLED'
+      }">
+                {{ order.status }}
+            </span>
+        </div>
+
+
+        <!--  Payment Status (FIXED) -->
+        <div class="col-md-3">
+            <strong>Payment:</strong>
+
+            <span class="badge" [ngClass]="{
+            'bg-success': order.payment?.status === 'SUCCESS',
+            'bg-warning text-dark': order.payment?.status === 'PENDING',
+            'bg-danger': order.payment?.status === 'FAILED'
+          }">
+
+                <i class="bi me-1" [ngClass]="{
+             'bi-check-circle': order.payment?.status === 'SUCCESS',
+             'bi-hourglass': order.payment?.status === 'PENDING',
+             'bi-x-circle': order.payment?.status === 'FAILED'
+           }"></i>
+
+                {{ order.payment?.status || 'NO PAYMENT' }}
+            </span>
+        </div>
+
+    </div>
+
+  
+
+    <!-- 🔹 Items -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let item of order.items">
+                    <td>
+                        <!-- <img [src]="getProductImage(item.productId)" style="width:70px;height:70px;object-fit:cover;"> -->
+                    </td>
+                    <td>{{ item.productName }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.price }}</td>
+                    <td>₹{{ item.total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 🔹 Total -->
+    <div class="mt-2">
+
+        <!-- Subtotal -->
+        <div>
+            <strong>Subtotal:</strong>
+            {{ order.totalAmount | currency:'INR' }}
+        </div>
+
+        <!-- GST -->
+        <div>
+            <strong>
+                GST ({{ order.payment?.gstPercent || 0 }}%):
+            </strong>
+
+            {{ order.payment?.gstAmount || 0 | currency:'INR' }}
+        </div>
+
+        <!-- Discount -->
+        <div>
+            <strong>
+                Discount ({{ order.payment?.discountPercent || 0 }}%):
+            </strong>
+
+            -{{ order.payment?.discountAmount || 0 | currency:'INR' }}
+        </div>
+
+        <hr>
+
+        <!-- Final -->
+        <div class="fw-bold text-success">
+            Final Amount:
+            {{ (order.payment?.netAmount || order.totalAmount) | currency:'INR' }}
+        </div>
+
+    </div>
+
+    <!-- 🔹 Shipping -->
+    <div class="mt-2">
+        <strong>Delivery Address:</strong><br>
+        {{ order.shipping?.name }},
+        {{ order.shipping?.address }},
+        {{ order.shipping?.city }} - {{ order.shipping?.pinCode }}<br>
+        Contact: {{ order.shipping?.contact }}
+    </div>
+
+    <div class="mt-3">
+
+        <!-- <button class="btn btn-danger" [disabled]="order.status !== 'IN_PROCESS' && order.status !='CONFIRMED'"
+            (click)="cancelOrder(order.id)">
+
+            Cancel Order
+
+        </button>
+        <button class="btn btn-success ms-2" *ngIf="order.payment?.status !== 'SUCCESS'" (click)="payNow(order.id)">
+            💳 Pay Now
+        </button>
+
+        <span *ngIf="order.status !== 'IN_PROCESS'" class="text-muted ms-2">
+            (Cannot cancel after dispatch)
+        </span> -->
+
+    </div>
+
+</div>

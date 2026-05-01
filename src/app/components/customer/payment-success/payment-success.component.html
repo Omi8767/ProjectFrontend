@@ -1,10 +1,85 @@
-<div *ngIf="loading">
-  Verifying Payment.....
+<div class="container py-5" *ngIf="!loading; else loadingTpl">
+
+  <!-- SUCCESS HEADER -->
+  <div class="text-center mb-4">
+    <h2 class="text-success"> Payment Successful</h2>
+    <p>Your order has been confirmed</p>
+  </div>
+
+  <!-- INVOICE CARD -->
+  <div class="card shadow-lg p-4" id="invoice">
+
+    <!-- ORDER INFO -->
+    <div class="d-flex justify-content-between mb-3">
+      <div>
+        <h5>Order ID: #{{ order.id }}</h5>
+        <p>Date: {{ order.orderDate | date:'medium' }}</p>
+      </div>
+      <div class="text-end">
+        <h5>Invoice</h5>
+      </div>
+    </div>
+
+    <hr>
+
+    <!-- CUSTOMER + SHIPPING -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <h6>Customer</h6>
+        <p>{{ order.customer?.name }}</p>
+      </div>
+      <div class="col-md-6 text-end">
+        <h6>Shipping Address</h6>
+        <p>
+          {{ order.shipping?.name }}<br>
+          {{ order.shipping?.address }}<br>
+          {{ order.shipping?.city }} - {{ order.shipping?.pinCode }}<br>
+          📞 {{ order.shipping?.contact }}
+        </p>
+      </div>
+    </div>
+
+    <!-- ITEMS TABLE -->
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Product</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of order.items">
+          <td>{{ item.productName }}</td>
+          <td>{{ item.quantity }}</td>
+          <td>₹{{ item.price }}</td>
+          <td>₹{{ item.total }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- TOTAL SUMMARY -->
+    <div class="text-end mt-3">
+      <p>Subtotal: ₹{{ getTotal() | number:'1.2-2' }}</p>
+      <p>GST (18%): ₹{{ getGST() | number:'1.2-2' }}</p>
+      <p>Discount (5%): -₹{{ getDiscount() | number:'1.2-2' }}</p>
+      <h5>Total Payable: ₹{{ getNet() | number:'1.2-2' }}</h5>
+    </div>
+
+  </div>
+
+  <!-- ACTION BUTTONS -->
+  <div class="text-center mt-4">
+    <button class="btn btn-primary me-2" (click)="printInvoice()">🧾 Download Invoice</button>
+    <button class="btn btn-outline-secondary" >📦 View Orders</button>
+  </div>
+
 </div>
 
-<div *ngIf="!loading">
- Payment Verified....
- <br>
- <br>
- <p>{{order | json}}</p>
-</div>
+<!-- LOADING -->
+<ng-template #loadingTpl>
+  <div class="text-center mt-5">
+    <h3>⏳ Verifying Payment...</h3>
+  </div>
+</ng-template>

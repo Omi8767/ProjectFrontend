@@ -31,6 +31,7 @@ export class PaymentSuccessComponent implements OnInit {
    this.paymentService.confirmPayment(sessionId).subscribe({
         next:(res)=>{
           this.order = res;
+          console.log(res);
           this.loading = false;
         },
         error:(err)=>{
@@ -39,6 +40,26 @@ export class PaymentSuccessComponent implements OnInit {
         }
    })
 
+  }
+
+  getTotal(): number {
+    return this.order?.items?.reduce((sum: number, i: any) => sum + i.total, 0) || 0;
+  }
+
+  getGST(): number {
+    return this.getTotal() * 0.18;
+  }
+
+  getDiscount(): number {
+    return this.getTotal() * 0.05;
+  }
+
+  getNet(): number {
+    return this.getTotal() + this.getGST() - this.getDiscount();
+  }
+
+  printInvoice() {
+    window.print();
   }
   
 
