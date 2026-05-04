@@ -49,4 +49,8 @@ export class OrderService {
   getOrderByCustomer(customerId:number):Observable<any[]>{
    return this.http.get<any[]>(`${this.apiUrl}/${customerId}/customer`);
   }
+
+  cancelOrder(orderId:number):Observable<any>{
+   return this.http.put<any>(`${this.apiUrl}/${orderId}/cancel`,{});
+  }
 }

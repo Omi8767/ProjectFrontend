@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../../../services/order.service';
 import { Customer } from '../../../services/customer-service.service';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-my-orders',
@@ -37,6 +38,50 @@ export class MyOrdersComponent implements OnInit {
         console.log(err);
       }
     })
+  }
+
+  cancelOrder(orderId:number){
+    Swal.fire({
+    title: 'Cancel Order?',
+    text: 'Are you sure you want to cancel this order?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#d33',
+    cancelButtonColor: '#3085d6',
+    confirmButtonText: 'Yes, cancel it',
+    cancelButtonText: 'No'
+  }).then((result) => {
+
+    if (!result.isConfirmed) return;
+
+    this.orderService.cancelOrder(orderId).subscribe({
+      next: () => {
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Cancelled!',
+          text: 'Your order has been cancelled.',
+          timer: 2000,
+          showConfirmButton: false
+        });
+
+
+        this.loadOrders(this.customer.id!);
+      },
+
+      error: err => {
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed!',
+          text: err.error?.message || 'Error cancelling order'
+        });
+        console.error(err);
+
+      }
+    });
+
+  });
   }
 
 }
