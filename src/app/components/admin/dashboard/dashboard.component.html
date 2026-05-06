@@ -1,1 +1,76 @@
-<p>dashboard works!</p>
+<!-- <h2 class="mb-4">📊 Admin Dashboard</h2> -->
+
+<div class="row g-3">
+
+  <div class="col-md-3">
+    <div class="card p-3 shadow-sm bg-primary text-white">
+      <h5><i class="fa fa-shopping-cart"></i> Total Orders</h5>
+      <h3>{{ data.totalOrders }}</h3>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-3 shadow-sm bg-success text-white">
+      <h5><i class="fa fa-credit-card"></i>Total Revenue</h5>
+      <h3>₹{{ data.totalRevenue }}</h3>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-3 shadow-sm bg-warning text-dark">
+      <h5><i class="fa fa-hourglass-half"></i>Pending Orders</h5>
+      <h3>{{ data.pendingOrders }}</h3>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card p-3 shadow-sm bg-dark text-white">
+      <h5><i class="fa fa-users"></i>Customers</h5>
+      <h3>{{ data.totalCustomers }}</h3>
+    </div>
+  </div>
+
+</div>
+
+<hr>
+<h4><i class="fa fa-truck"></i> Order Status</h4>
+
+<ul>
+  <li><i class="fa fa-check-circle text-success"></i> Confirmed: {{ data.confirmed }}</li>
+  <li><i class="fa fa-cogs text-primary"></i> In Process: {{ data.inProcess }}</li>
+  <li><i class="fa fa-truck text-info"></i> Dispatch: {{ data.dispatch }}</li>
+  <li><i class="fa fa-home text-success"></i> Delivered: {{ data.delivered }}</li>
+  <li><i class="fa fa-times-circle text-danger"></i> Rejected: {{ data.rejected }}</li>  
+  <li><i class="fa fa-ban text-danger"></i> Cancelled: {{ data.cancelled }}</li>  
+</ul>
+
+
+<hr>
+
+<h4><i class="fa fa-credit-card"></i> Payment</h4>
+
+<ul>
+  <li><i class="fa fa-check text-success"></i> Paid: {{ data.paid }}</li>
+  <li><i class="fa fa-hourglass-half text-warning"></i> Pending: {{ data.pendingPayments }}</li>
+   <li><i class="fa fa-undo text-warning"></i> Refund: {{ data.refundPayments }}</li>
+</ul>
+
+<hr>
+
+<!-- <h4>🕒 Recent Orders</h4>
+
+<table class="table table-bordered">
+  <tr>
+    <th>ID</th>
+    <th>Customer</th>
+    <th>Amount</th>
+    <th>Status</th>
+  </tr>
+
+  <tr *ngFor="let o of data.recentOrders">
+    <td>{{ o.id }}</td>
+    <td>{{ o.customerName  }}</td>
+    <td>₹{{ o.totalAmount }}</td>
+    <td>{{ o.status }}</td>
+  </tr>
+</table> -->

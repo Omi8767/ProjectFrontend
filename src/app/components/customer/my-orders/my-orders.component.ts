@@ -51,7 +51,6 @@ export class MyOrdersComponent implements OnInit {
     confirmButtonText: 'Yes, cancel it',
     cancelButtonText: 'No'
   }).then((result) => {
-
     if (!result.isConfirmed) return;
 
     this.orderService.cancelOrder(orderId).subscribe({

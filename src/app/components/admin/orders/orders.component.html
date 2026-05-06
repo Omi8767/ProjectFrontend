@@ -1,0 +1,117 @@
+<h2 class="mb-3">Manage Orders</h2>
+<div *ngIf="isLoading">
+    <span class="spinner-border spinner-border-sm"></span>
+</div>
+<div *ngIf="!isLoading">
+
+<div *ngFor="let order of orders" class="card mb-4 shadow-sm p-3">
+
+    <!-- 🔹 Order Header -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <strong>Order ID:</strong> {{ order.id }}
+        </div>
+        <div class="col-md-4">
+            <strong>Order Date:</strong> {{ order.orderDate | date:'medium' }}
+        </div>
+        <div class="col-md-4">
+            <strong>Customer:</strong> {{ order.customer?.name }}
+        </div>
+    </div>
+
+    <!-- 🔹 Order Items -->
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let item of order.items">
+                    <td>
+                        <img [src]="item.imageUrl" style="width:80px;height:80px;object-fit:cover;" />
+                    </td>
+                    <td>{{ item.productName }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹{{ item.price }}</td>
+                    <td>₹{{ item.total }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 🔹 Order Summary -->
+    <div class="row mt-3">
+        <div class="col-md-4">
+            <strong>Status:</strong>
+            <span class="badge" [ngClass]="getStatusClass(order.status)">
+                {{ getStatusLabel(order.status) }}
+            </span>
+        </div>
+
+        <div class="col-md-4">
+            <strong>Final Amount:</strong>
+            ₹{{ order.payment?.netAmount || order.totalAmount }} ({{order.payment?.paymentMethod}})
+        </div>
+
+        <div class="col-md-4">
+            <strong>Payment:</strong>
+
+            <span class="badge" [ngClass]="{
+                    'bg-success': order.payment?.status === 'SUCCESS',
+                    'bg-warning text-dark': order.payment?.status === 'PENDING',
+                    'bg-danger': order.payment?.status === 'FAILED',
+                    'bg-info': order.payment?.status === 'REFUNDED',
+                    'bg-secondary': order.payment?.status === 'CANCELLED'
+                }">
+
+                <i class="bi me-1" [ngClass]="{
+                    'bi-check-circle-fill': order.payment?.status === 'SUCCESS',
+                    'bi-hourglass-split': order.payment?.status === 'PENDING',
+                    'bi-x-circle-fill': order.payment?.status === 'FAILED',
+                    'bi-arrow-counterclockwise': order.payment?.status === 'REFUNDED',
+                    'bi-slash-circle-fill': order.payment?.status === 'CANCELLED'
+                }"></i>
+
+                {{ order.payment?.status || 'NO PAYMENT' }}
+            </span>
+        </div>
+    </div>
+
+    <!-- 🔹 Shipping Info -->
+    <div class="mt-3">
+        <strong>Delivery Address:</strong><br>
+        {{ order.shipping?.name }},
+        {{ order.shipping?.address }},
+        {{ order.shipping?.city }} - {{ order.shipping?.pinCode }}<br>
+        Contact: {{ order.shipping?.contact }}
+    </div>
+
+    <!-- 🔹 Update Status -->
+    <div class="row mt-3 align-items-center" *ngIf="order.status !== 'CANCELLED' && order.status !=='DELIVERED'">
+        <div class="col-md-4">
+            <select class="form-control" [(ngModel)]="order.newStatus">
+                <option value="IN_PROCESS">In Process</option>
+                <option value="CONFIRMED">Confirmed</option>
+                <option value="DISPATCH">Dispatch</option>
+                <option value="DELIVERED">Delivered</option>
+                <option value="REJECT">Reject</option>
+
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <button class="btn btn-primary" (click)="updateStatus(order)">
+                Update Status
+            </button>
+        </div>
+    </div>
+
+</div>
+</div>
