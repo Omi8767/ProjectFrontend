@@ -18,7 +18,6 @@ export const routes: Routes = [
       { path: 'login', loadComponent: () => import('./components/user/login/login.component').then(m => m.LoginComponent) },
       { path: 'products', loadComponent: () => import('./components/user/product-list/product-list.component').then(m => m.ProductListComponent) },
       { path: 'product/:id', loadComponent: () => import('./components/user/product-details/product-details.component').then(m => m.ProductDetailsComponent) },
-
     ]
   },
   {
@@ -51,6 +50,7 @@ export const routes: Routes = [
       { path: 'categories', loadComponent: () => import('./components/admin/category/category.component').then(m => m.CategoryComponent) },
       { path: 'products', loadComponent: () => import('./components/admin/manage-product/manage-product.component').then(m => m.ManageProductComponent) },
       { path: 'orders', loadComponent: () => import('./components/admin/orders/orders.component').then(m => m.OrdersComponent) },
+      { path: 'report/:type', loadComponent: () => import('./components/admin/report/report.component').then(m => m.ReportComponent) },
       
     ]
   }

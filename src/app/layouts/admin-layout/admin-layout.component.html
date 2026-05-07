@@ -10,6 +10,22 @@
       <a routerLink="/admin/orders" routerLinkActive="active">Orders</a>
       <a  routerLinkActive="active">Feedback</a>
       <a  routerLinkActive="active">Enquiries</a>
+
+      <div class="menu-group" (click)="toggle()">
+          <div class="menu-title">
+              Reports
+              <span class="arrow"></span>
+          </div>
+          <div class="sub-menu" *ngIf="isReportOpen">
+            <a routerLink="/admin/report/category">Category</a>
+            <a routerLink="/admin/report/products">Product</a>
+            <a routerLink="/admin/report/enquiry">Enquiry</a>
+            <a routerLink="/admin/report/customers">Customer</a>
+            <a routerLink="/admin/report/feedback">Feedback</a>
+            <a routerLink="/admin/report/orders">Order</a>
+          </div>
+      </div>
+
     </nav>
     <button class="logout" (click)="logout()">Logout</button>
   </aside>

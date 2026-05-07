@@ -21,24 +21,41 @@ export class PaymentSuccessComponent implements OnInit {
   ){}
 
   ngOnInit(): void {
-   const sessionId = this.route.snapshot.queryParamMap.get('session_id');
+    const sessionId = this.route.snapshot.queryParamMap.get('session_id');
 
-   if(!sessionId){
+     if (sessionId) {
+    this.paymentService.confirmPayment(sessionId).subscribe({
+      next: (res) => {
+        this.order = res;
+        this.loading = false;
+      },
+      error: () => {
+        alert('Payment Failed');
+        this.router.navigate(['/customer/cart']);
+      }
+    });
+  }
+
+  //  COD flow (from localStorage)
+  else {
+    const data = localStorage.getItem('paymentData');
+
+    if (!data) {
+      alert('No payment data found');
       this.router.navigate(['/customer/cart']);
-      return
-   }
+      return;
+    }
 
-   this.paymentService.confirmPayment(sessionId).subscribe({
-        next:(res)=>{
-          this.order = res;
-          console.log(res);
-          this.loading = false;
-        },
-        error:(err)=>{
-          console.error(err);
-          this.router.navigate(['/customer/cart']);
-        }
-   })
+    const paymentRes = JSON.parse(data);
+
+    // IMPORTANT: extract order from response
+    this.order = paymentRes.order;
+
+    this.loading = false;
+
+    // optional: clear after use
+    localStorage.removeItem('paymentData');
+  }
 
   }
 

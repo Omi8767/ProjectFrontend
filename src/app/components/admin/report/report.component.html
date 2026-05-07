@@ -1,0 +1,48 @@
+<div class="card shadow p-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>{{ type | uppercase }} REPORT</h3>
+
+        <div>
+            <button class="btn btn-danger me-2" (click)="downloadPdf()">
+                📄 Export PDF
+            </button>
+
+            <button class="btn btn-success" (click)="downloadExcel()">
+                📊 Export Excel
+            </button>
+        </div>
+    </div>
+
+
+    <div *ngIf="loading" class="text-center my-4">
+        <div class="spinner"></div>
+        <p>Loading report...</p>
+    </div>
+
+    <!-- Table -->
+
+    <div *ngIf="!loading && data.length === 0" class="text-center text-muted">
+        No data found
+    </div>
+
+    <div class="table-responsive" *ngIf="!loading">
+        <table class="table table-bordered table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th *ngFor="let col of columns">{{ col }}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let row of data">
+                    <td *ngFor="let col of columns">
+                        {{ getValue(row, col) }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 export class PaymentComponent implements OnInit {
   paymentForm!: FormGroup;
   submitting = false;
+  mode='Card';
   successMessage = '';
   totalAmount = 0;
   netAmount = 0;
@@ -73,14 +74,18 @@ export class PaymentComponent implements OnInit {
       }
 
       this.paymentService.makePayment(paymentData).subscribe({
-        next:()=>{
+        next:(res)=>{
           this.successMessage = 'Order placed with Cash on delivery';
           localStorage.removeItem('lastOrder');
+          localStorage.setItem('paymentData', JSON.stringify(res));
+
+          //  redirect to success page
+          this.router.navigate(['/customer/payment-success']);
           this.submitting=false;
         },
         error:(err)=>{
           console.error(err);
-          localStorage.removeItem('lastOrder');
+          localStorage.removeItem('lastOrder');           
           this.submitting=false;
         }
       });
