@@ -151,25 +151,68 @@ export class ForgetPasswordComponent {
     }
   }
 
+  trackByIndex(index: number): number {
+  return index;
+}
+
   // OTP INPUT AUTO MOVE
+  // moveNext(event: any, index: number) {
+
+  //   const input = event.target as HTMLInputElement;
+
+  //   input.value = input.value.replace(/[^0-9]/g, ''); // Allow only digits
+
+  //   //save in particular index/textbox
+  //   this.otp[index] = input.value;
+
+  //   if(input.value && index < 5) {
+  //     const next = document.getElementById('otp' + (index + 1));
+  //     next?.focus();
+  //   }
+
+  //   if(input.value === '' && index > 0) {
+  //     const prev = document.getElementById('otp' + (index - 1));
+  //     prev?.focus();
+  //   }
+
+  // }
+
+
   moveNext(event: any, index: number) {
 
-    const input = event.target as HTMLInputElement;
+  const input = event.target as HTMLInputElement;
 
-    input.value = input.value.replace(/[^0-9]/g, ''); // Allow only digits
+  let value = input.value.replace(/\D/g, '');
 
-    //save in particular index/textbox
-    this.otp[index] = input.value;
+  value = value.substring(0, 1);
 
-    if(input.value && index < 5) {
-      const next = document.getElementById('otp' + (index + 1));
-      next?.focus();
-    }
+  this.otp[index] = value;
 
-    if(input.value === '' && index > 0) {
-      const prev = document.getElementById('otp' + (index - 1));
-      prev?.focus();
-    }
+  input.value = value;
 
+  if (value && index < 5) {
+    const nextInput =
+      document.getElementById('otp' + (index + 1)) as HTMLInputElement;
+
+    nextInput?.focus();
   }
+}
+
+handleBackspace(event: KeyboardEvent, index: number) {
+
+  const input = event.target as HTMLInputElement;
+
+  // if current box empty and backspace pressed
+  if (event.key === 'Backspace' && !input.value && index > 0) {
+
+    // clear previous value
+    this.otp[index - 1] = '';
+
+    // move focus previous
+    const prevInput =
+      document.getElementById('otp' + (index - 1)) as HTMLInputElement;
+
+    prevInput?.focus();
+  }
+}
 }
