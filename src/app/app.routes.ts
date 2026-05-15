@@ -16,6 +16,7 @@ export const routes: Routes = [
       { path: 'enquiry', loadComponent: () => import('./components/user/enquiry/enquiry.component').then(n => n.EnquiryComponent) },
       { path: 'signUp', loadComponent: () => import('./components/user/customer/customer.component').then(m => m.CustomerComponent) },
       { path: 'login', loadComponent: () => import('./components/user/login/login.component').then(m => m.LoginComponent) },
+      { path: 'forgot-password', loadComponent: () => import('./components/user/forget-password/forget-password.component').then(m => m.ForgetPasswordComponent) },
       { path: 'products', loadComponent: () => import('./components/user/product-list/product-list.component').then(m => m.ProductListComponent) },
       { path: 'product/:id', loadComponent: () => import('./components/user/product-details/product-details.component').then(m => m.ProductDetailsComponent) },
     ]

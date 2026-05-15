@@ -32,4 +32,17 @@ private apiUrl = `${API_BASE_URL}/customers`
   login(request:ILogin):Observable<Customer>{
     return this.http.post<Customer>(`${this.apiUrl}/login`,request)
   }
+
+  sendOtp(email:string){
+    return this.http.post(`${this.apiUrl}/send-otp?email=${email}`,{});
+  }
+
+  verifyOtp(email:string,otp:string){
+     return this.http.post(`${this.apiUrl}/verify-otp?email=${email}&otp=${otp}`,{});
+  }
+
+  resetPassword(email:string,password:string){
+    return this.http.post(`${this.apiUrl}/reset-password?email=${email}&password=${password}`,{});
+  }
+
 }
